@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+    volumes:
+      - ./database:/var/libs/mysql
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 6080:8080
+  web:
+    image: nginx
+    ports:
+      - 8080:80
+  hello:
+    working_dir: /app
+    build: .
+    command: node hello-world.js
+    ports:
+      - 3000:3000
+    deploy:
+      replicas: 1
